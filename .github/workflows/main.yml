@@ -33,6 +33,40 @@ jobs:
           npm -v
           npx zowe --version
 
+      - name: Create Zowe config
+        env:
+          ZOWE_USERNAME: ${{ secrets.ZOWE_USERNAME }}
+          ZOWE_PASSWORD: ${{ secrets.ZOWE_PASSWORD }}
+        run: |
+          cat > zowe.config.json <<EOF
+          {
+            "$schema": "./zowe.schema.json",
+            "profiles": {
+              "zosmf": {
+                "type": "zosmf",
+                "properties": {
+                  "port": 10443
+                }
+              },
+              "project_base": {
+                "type": "base",
+                "properties": {
+                  "host": "204.90.115.200",
+                  "user": "${ZOWE_USERNAME}",
+                  "password": "${ZOWE_PASSWORD}",
+                  "rejectUnauthorized": false
+                }
+              }
+            },
+            "defaults": {
+              "zosmf": "zosmf",
+              "base": "project_base"
+            }
+          }
+          EOF
+
+          cat zowe.config.json
+
       - name: Setup Mainframe Environment and Upload COBOL Check
         env:
           ZOWE_USERNAME: ${{ secrets.ZOWE_USERNAME }}
