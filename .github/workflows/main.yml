@@ -7,7 +7,9 @@ on:
 jobs:
   cobol-check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
+      
       - uses: actions/checkout@v4
 
       - name: Set up Java
@@ -23,7 +25,9 @@ jobs:
 
       - name: Install Zowe CLI
         run: |
-          npm install -g @zowe/cli
+          npm config set fund false
+          npm config set audit false
+          npm install -g @zowe/cli --no-fund --no-audit
 
       - name: Verify tools
         run: |
