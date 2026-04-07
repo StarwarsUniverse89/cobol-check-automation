@@ -31,7 +31,7 @@ jobs:
           java -version
           node -v
           npm -v
-          zowe --version
+          npx zowe --version
 
       - name: Setup Mainframe Environment and Upload COBOL Check
         env:
